@@ -6,3 +6,14 @@
     --cyan: #778DA9;
     --white: #E0E1DD;
 }
+
+/* main */
+body{
+    width: 100%;
+    height: 100vh;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
