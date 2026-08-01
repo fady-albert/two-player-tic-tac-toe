@@ -25,6 +25,7 @@ body{
     transition: all 1s ease;
 }
 
+/* mode button */
 .mode{
     position: absolute;
     top: 10px;
@@ -47,7 +48,37 @@ body{
     font-size: 25px;
 }
 
-/* dark mode */
+/* game board */
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 10px solid var(--black);
+    border-radius: 25px;
+    transition: all 1s ease;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 10px;
+
+}
+
+.board .cell{
+    width: 150px;
+    height: 150px;
+    background: var(--black);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 1s ease;
+}
+
+/*! dark mode !*/
 body.dark{
     background: var(--black);
 }
@@ -55,4 +86,12 @@ body.dark{
 body.dark .mode{
     background: var(--white);
     color: var(--black);
+}
+
+body.dark .container{
+    border-color: var(--white);
+}
+
+body.dark .board .cell{
+    background: var(--white);
 }
