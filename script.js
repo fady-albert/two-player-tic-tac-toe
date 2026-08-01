@@ -110,6 +110,7 @@ function checkWin() {
                 scoreO++;
                 winO.textContent = scoreO;
             }
+            return;
         }
     }
 }
@@ -125,6 +126,7 @@ function game() {
                 cell.textContent = player;
                 cell.style.color = player === 'O' ? '#ff4d6d' : '#4d79ff';
                 player = player === 'O' ? 'X' : 'O';
+                msg.textContent = `${player}'s turn`;
                 checkWin();
                 draw();
             }
