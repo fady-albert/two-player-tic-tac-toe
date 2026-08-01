@@ -5,11 +5,16 @@ const main = document.body;
 const cells = document.querySelectorAll('.cell');
 const msg = document.getElementById('message');
 const resetBtn = document.getElementById('reset');
+const winX = document.getElementById('winX');
+const winO = document.getElementById('winO');
+const resetScoreBtn = document.getElementById('resetScore');
 
 // add JS data
 const savedMode = localStorage.getItem('mode') || '';
 let player = 'O';
 let end = false;
+let scoreX = 0;
+let scoreO = 0;
 
 // mode function
 modeBtn.addEventListener('click', () => {
@@ -33,13 +38,25 @@ if(savedMode === 'dark') {
 //! game function
 
 // reset function
-resetBtn.addEventListener('click', () => {
+function reset() {
     cells.forEach(cell => {
         cell.textContent = '';
         cell.style.border = 'none';
     });
     end = false;
-    msg.textContent = "Game reset!";
+    msg.textContent = "Game reset !";
+}
+
+resetBtn.addEventListener('click', () => {
+    reset();
+});
+
+resetScoreBtn.addEventListener('click', () => {
+    reset();
+    scoreX = 0;
+    scoreO = 0;
+    winX.textContent = scoreX;
+    winO.textContent = scoreO;
 });
 
 // draw
@@ -49,7 +66,7 @@ function draw() {
         const isDraw = Array.from(cells).every(cell => cell.textContent !== '');
         if(isDraw) {
             end = true;
-            msg.textContent = "It's a draw!";
+            msg.textContent = "It's a draw !";
         }
     }
 }
@@ -86,6 +103,13 @@ function checkWin() {
             borderColor(cells[c], '#06923E');
             end = true;
             msg.textContent = `${cells[a].textContent} wins !`;
+            if(cells[a].textContent === 'X') {
+                scoreX++;
+                winX.textContent = scoreX;
+            } else {
+                scoreO++;
+                winO.textContent = scoreO;
+            }
         }
     }
 }
