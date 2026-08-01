@@ -16,12 +16,15 @@
 
 body{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 5px;
     position: relative;
+    margin-bottom: 10px;
     transition: all 1s ease;
 }
 
@@ -48,11 +51,40 @@ body{
     font-size: 25px;
 }
 
+/* text */
+.text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.text h1{
+    font-size: 30px;
+    color: var(--black);
+    font-family: cursive;
+    font-weight: bold;
+    transition: all 1s ease;
+}
+
+.text p{
+    font-size: 20px;
+    color: var(--black);
+    font-family: cursive;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 1s ease;
+}
+
 /* game board */
 .container{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 10px;
     padding: 10px;
     border: 10px solid var(--black);
     border-radius: 25px;
@@ -63,7 +95,7 @@ body{
     display: grid;
     grid-template-columns: repeat(3, auto);
     gap: 10px;
-
+    transition: all 1s ease;
 }
 
 .board .cell{
@@ -75,6 +107,25 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 60px;
+    font-family: cursive;
+    font-weight: bold;
+    color: var(--white);
+    transition: all 1s ease;
+}
+
+.container .reset{
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    background: var(--black);
+    color: var(--white);
+    font-size: 20px;
+    font-family: cursive;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
     transition: all 1s ease;
 }
 
@@ -94,4 +145,14 @@ body.dark .container{
 
 body.dark .board .cell{
     background: var(--white);
+    color: var(--black);
+}
+
+body.dark .text h1, body.dark .text p{
+    color: var(--white);
+}
+
+body.dark .container .reset{
+    background: var(--white);
+    color: var(--black);
 }
