@@ -46,6 +46,7 @@ body{
     cursor: pointer;
     transition: all 1s linear;
     user-select: none;
+    z-index: 1001;
 }
 
 .mode span{
@@ -169,6 +170,77 @@ body{
     color: #ff4d6d;
 }
 
+/* display */
+.display{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 1s ease;
+}
+
+.display .content{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.display .content.hide{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.display .content h1{
+    color: var(--black);
+    font-size: 50px;
+    font-family: cursive;
+    font-style: oblique;
+    transition: all 1s ease;
+    user-select: none;
+    pointer-events: none;
+}
+
+.display .content .btns{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.display .content .btns button{
+    width: 200px;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 20px;
+    font-family: cursive;
+    text-transform: capitalize;
+    transition: all 1s ease, scale .5s linear;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display .content .btns button:hover{
+    scale: 1.05;
+}
+
+.display .content .btns button:active{
+    scale: 0.95;
+}
+
 /*! dark mode !*/
 body.dark{
     background: var(--black);
@@ -200,4 +272,17 @@ body.dark .container .reset{
 body.dark .points{
     background: var(--black);
     box-shadow: inset 3px -3px 10px 5px var(--white);
+}
+
+body.dark .display{
+    background: var(--black);
+}
+
+body.dark .display .content h1{
+    color: var(--white)
+}
+
+body.dark .display .content .btns button{
+    background: var(--white);
+    color: var(--black);
 }
