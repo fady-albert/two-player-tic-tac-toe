@@ -14,6 +14,11 @@ const headMsg = document.getElementById('hMsg');
 const btn1 = document.getElementById('btn1');
 const btn2 = document.getElementById('btn2');
 
+// import sounds
+const clickSound = new Audio('./sounds/click.mp3');
+const winSound = new Audio('./sounds/win.mp3');
+const removeSound = new Audio('./sounds/remove.mp3');
+
 // add JS data
 const savedMode = localStorage.getItem('mode') || '';
 let player = 'O';
@@ -25,6 +30,13 @@ let how = '';
 let step = 'mode';
 let xMove = [];
 let oMove = [];
+
+
+// sound function
+function sound(s) {
+    s.currentTime = 0;
+    s.play();
+}
 
 // mode function
 modeBtn.addEventListener('click', () => {
@@ -60,10 +72,12 @@ function reset() {
 }
 
 resetBtn.addEventListener('click', () => {
+    sound(removeSound);
     reset();
 });
 
 resetScoreBtn.addEventListener('click', () => {
+    sound(removeSound);
     reset();
     scoreX = 0;
     scoreO = 0;
@@ -115,6 +129,7 @@ function checkWin() {
             borderColor(cells[c], '#06923E');
             end = true;
             msg.textContent = `${cells[a].textContent} wins !`;
+            sound(winSound)
             if(cells[a].textContent === 'X') {
                 scoreX++;
                 winX.textContent = scoreX;
@@ -128,78 +143,72 @@ function checkWin() {
 }
 
 // main
-function n2P() {
-    cells.forEach(cell => {
-        cell.addEventListener('click', () => {
-
-            if(end) return;
-
-            if(cell.textContent === '') {
-                cell.textContent = player;
-                cell.style.color = player === 'O' ? '#ff4d6d' : '#4d79ff';
-                player = player === 'O' ? 'X' : 'O';
-                msg.textContent = `${player}'s turn`;
-                checkWin();
-                draw();
-            }
-        })
-    })
+function n2p(cell, index) {
+    if(cell.textContent === '') {
+        cell.textContent = player;
+        cell.style.color = player === 'O' ? '#ff4d6d' : '#4d79ff';
+        player = player === 'O' ? 'X' : 'O';
+        msg.textContent = `${player}'s turn`;
+        checkWin();
+        draw();
+    }
 }
 
-function l2p() {
-    cells.forEach((cell, index) => {
-        cell.addEventListener('click', () => {
-
-            if (end) return;
-
-
-            if(cell.textContent === ''){
-                if(player === 'O') {
-                    if(oMove.length < 3) {
-                        oMove.push(index);
-                    } else {
-                        oMove.splice(0 ,1);
-                        oMove.push(index);
-                    }
-                } else {
-                    if(xMove.length < 3) {
-                        xMove.push(index)
-                    } else {
-                        xMove.splice(0 ,1);
-                        xMove.push(index);
-                    }
-                }
-
-                player = player === 'O' ? 'X' : 'O';
-                msg.textContent = `${player}'s turn`;
+function l2p(cell, index) {
+    if(cell.textContent === ''){
+        if(player === 'O') {
+            if(oMove.length < 3) {
+                oMove.push(index);
+            } else {
+                oMove.splice(0 ,1);
+                oMove.push(index);
             }
-
-            cells.forEach(cell => {
-                cell.textContent = '';
-            })
-
-            for (let i of oMove) {
-                cells[i].textContent = 'O';
-                cells[i].style.color = '#ff4d6d';
+        } else {
+            if(xMove.length < 3) {
+                xMove.push(index)
+            } else {
+                xMove.splice(0 ,1);
+                xMove.push(index);
             }
+        }
 
-            for (let i of xMove) {
-                cells[i].textContent = 'X';
-                cells[i].style.color = '#4d79ff';
-            }
+        player = player === 'O' ? 'X' : 'O';
+        msg.textContent = `${player}'s turn`;
+    }
 
-            checkWin();
-        })
+    cells.forEach(cell => {
+        cell.textContent = '';
     })
+
+    for (let i of oMove) {
+        cells[i].textContent = 'O';
+        cells[i].style.color = '#ff4d6d';
+    }
+
+    for (let i of xMove) {
+        cells[i].textContent = 'X';
+        cells[i].style.color = '#4d79ff';
+    }
+
+    checkWin();
 }
 
 function start() {
-    if(gameMode === 'normal' & how === '2-player') {
-        n2p()
-    }
-    else if(gameMode === 'limited' & how === '2-player') {
-        l2p()
-    }
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+        
+            if (end) return;
+
+            sound(clickSound)
+
+            if(gameMode === 'normal' & how === '2-player') {
+                n2p(cell, index)
+            }
+            else if(gameMode === 'limited' & how === '2-player') {
+                l2p(cell, index)
+            }
+        })
+    })
 }
 
 // display
