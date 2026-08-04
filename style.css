@@ -134,6 +134,7 @@ body{
     cursor: pointer;
     width: 100%;
     transition: all 1s ease;
+    text-transform: capitalize;
     user-select: none;
 }
 

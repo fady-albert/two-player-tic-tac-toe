@@ -13,6 +13,7 @@ const content = document.getElementById('content');
 const headMsg = document.getElementById('hMsg');
 const btn1 = document.getElementById('btn1');
 const btn2 = document.getElementById('btn2');
+const showDisplay = document.getElementById('showDisplay');
 
 // import sounds
 const clickSound = new Audio('./sounds/click.mp3');
@@ -72,11 +73,15 @@ function reset() {
 }
 
 resetBtn.addEventListener('click', () => {
+    if ([...cells].every(cell => cell.textContent === '')) return;
+
     sound(removeSound);
     reset();
 });
 
 resetScoreBtn.addEventListener('click', () => {
+    if (scoreX === 0 && scoreO === 0) return;
+
     sound(removeSound);
     reset();
     scoreX = 0;
@@ -246,4 +251,14 @@ btn2.addEventListener('click', () => {
         how = '1-player';
         start()
     }
+})
+
+showDisplay.addEventListener('click', () => {
+    step = 'mode';
+    gameMode = '';
+    how = '';
+    btn1.textContent = 'normal';
+    btn2.textContent = 'limited';
+    headMsg.textContent = 'choose the game mode';
+    display.classList.remove('hide');
 })
