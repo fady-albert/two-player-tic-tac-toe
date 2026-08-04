@@ -8,6 +8,11 @@ const resetBtn = document.getElementById('reset');
 const winX = document.getElementById('winX');
 const winO = document.getElementById('winO');
 const resetScoreBtn = document.getElementById('resetScore');
+const display = document.getElementById('display');
+const content = document.getElementById('content');
+const headMsg = document.getElementById('hMsg');
+const btn1 = document.getElementById('btn1');
+const btn2 = document.getElementById('btn2');
 
 // add JS data
 const savedMode = localStorage.getItem('mode') || '';
@@ -15,6 +20,11 @@ let player = 'O';
 let end = false;
 let scoreX = 0;
 let scoreO = 0;
+let gameMode = '';
+let how = '';
+let step = 'mode';
+let xMove = [];
+let oMove = [];
 
 // mode function
 modeBtn.addEventListener('click', () => {
@@ -45,6 +55,8 @@ function reset() {
     });
     end = false;
     msg.textContent = "Game reset !";
+    oMove = [];
+    xMove = [];
 }
 
 resetBtn.addEventListener('click', () => {
@@ -116,7 +128,7 @@ function checkWin() {
 }
 
 // main
-function game() {
+function n2P() {
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
 
@@ -134,4 +146,95 @@ function game() {
     })
 }
 
-game()
+function l2p() {
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+
+            if (end) return;
+
+
+            if(cell.textContent === ''){
+                if(player === 'O') {
+                    if(oMove.length < 3) {
+                        oMove.push(index);
+                    } else {
+                        oMove.splice(0 ,1);
+                        oMove.push(index);
+                    }
+                } else {
+                    if(xMove.length < 3) {
+                        xMove.push(index)
+                    } else {
+                        xMove.splice(0 ,1);
+                        xMove.push(index);
+                    }
+                }
+
+                player = player === 'O' ? 'X' : 'O';
+                msg.textContent = `${player}'s turn`;
+            }
+
+            cells.forEach(cell => {
+                cell.textContent = '';
+            })
+
+            for (let i of oMove) {
+                cells[i].textContent = 'O';
+                cells[i].style.color = '#ff4d6d';
+            }
+
+            for (let i of xMove) {
+                cells[i].textContent = 'X';
+                cells[i].style.color = '#4d79ff';
+            }
+
+            checkWin();
+        })
+    })
+}
+
+function start() {
+    if(gameMode === 'normal' & how === '2-player') {
+        n2p()
+    }
+    else if(gameMode === 'limited' & how === '2-player') {
+        l2p()
+    }
+}
+
+// display
+function displays() {
+    content.classList.add('hide');
+
+    setTimeout(() => {
+        headMsg.textContent = 'choose the opponent';
+        btn1.textContent = '2 player';
+        btn2.textContent = '1 player';
+        content.classList.remove('hide');
+
+        step = 'opponent';
+
+    }, 500);
+}
+
+btn1.addEventListener('click', () => {
+    if(step === 'mode') {
+        displays()
+        gameMode = 'normal';
+    } else {
+        display.classList.add('hide');
+        how = '2-player';
+        start()
+    }
+})
+
+btn2.addEventListener('click', () => {
+    if(step === 'mode') {
+        displays()
+        gameMode = 'limited';
+    } else {
+        display.classList.add('hide');
+        how = '1-player';
+        start()
+    }
+})
