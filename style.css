@@ -212,7 +212,7 @@ body{
     pointer-events: none;
 }
 
-.display .content h1{
+.display .content h1, .display .content p{
     color: var(--black);
     font-size: 50px;
     font-family: cursive;
@@ -220,6 +220,10 @@ body{
     transition: all 1s ease;
     user-select: none;
     pointer-events: none;
+}
+
+.display .content p{
+    font-size: 30px;
 }
 
 .display .content .btns{
@@ -250,6 +254,71 @@ body{
 }
 
 .display .content .btns button:active{
+    scale: 0.95;
+}
+
+/* ai level */
+.aiLevel{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    transition: all 1s ease;
+}
+
+.aiLevel.hide{
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.aiLevel h1{
+    color: var(--black);
+    font-size: 50px;
+    font-family: cursive;
+    font-style: oblique;
+    transition: all 1s ease;
+    user-select: none;
+    pointer-events: none;
+    text-transform: capitalize;
+}
+
+.aiLevel button{
+    width: 200px;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 20px;
+    font-family: cursive;
+    text-transform: capitalize;
+    transition: all 1s ease, scale 0.5s linear;
+    cursor: pointer;
+    user-select: none;
+}
+
+.aiLevel button#back{
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+.aiLevel button:hover{
+    scale: 1.05;
+}
+
+.aiLevel button:active{
     scale: 0.95;
 }
 
@@ -286,15 +355,15 @@ body.dark .points{
     box-shadow: inset 3px -3px 10px 5px var(--white);
 }
 
-body.dark .display{
+body.dark .display, body.dark .aiLevel{
     background: var(--black);
 }
 
-body.dark .display .content h1{
+body.dark .display .content h1, body.dark .aiLevel h1{
     color: var(--white)
 }
 
-body.dark .display .content .btns button{
+body.dark .display .content .btns button, body.dark .aiLevel button{
     background: var(--white);
     color: var(--black);
 }

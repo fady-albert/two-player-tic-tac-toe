@@ -31,6 +31,7 @@ let how = '';
 let step = 'mode';
 let xMove = [];
 let oMove = [];
+let aiLevel = '';
 
 
 // sound function
@@ -70,6 +71,11 @@ function reset() {
     msg.textContent = "Game reset !";
     oMove = [];
     xMove = [];
+
+    if (player === 'X') {
+        easyNor()
+    }
+
 }
 
 resetBtn.addEventListener('click', () => {
@@ -198,6 +204,52 @@ function l2p(cell, index) {
     checkWin();
 }
 
+function n1p(cell, index) {
+
+    if (end) return;
+
+    if (cell.textContent === '') {
+        if (player === 'O') {
+            cell.textContent = player;
+            
+            checkWin();
+            draw();
+
+            cell.style.color = '#ff4d6d';
+            player = player === 'O' ? 'X' : 'O';
+            msg.textContent = `${player}'s turn`;
+            if ([...cells].some(cell => cell.textContent === '')) {
+                easyNor()
+            }
+        }
+    }
+}
+
+// game bot
+function easyNor() {    
+    let num;
+    if (player === 'X') {
+        do {
+            num = Math.floor(Math.random() * 9)
+        } while (cells[num].textContent !== '');
+
+        setTimeout(() => {
+            if (end) return;
+
+            cells[num].textContent = player;
+
+            checkWin();
+            draw();
+
+            cells[num].style.color = '#4d79ff';
+            player = player === 'O' ? 'X' : 'O';
+            msg.textContent = `${player}'s turn`;
+            sound(clickSound)
+        }, 500);
+    }
+}
+
+// start the game as thse user want to play
 function start() {
     cells.forEach((cell, index) => {
         cell.addEventListener('click', () => {
@@ -206,10 +258,13 @@ function start() {
 
             sound(clickSound)
 
-            if(gameMode === 'normal' & how === '2-player') {
+            if(gameMode === 'normal' && how === '2-player') {
                 n2p(cell, index)
             }
-            else if(gameMode === 'limited' & how === '2-player') {
+            else if(gameMode === 'normal' && how === '1-player') {
+                n1p(cell, index)
+            }
+            else if(gameMode === 'limited' && how === '2-player') {
                 l2p(cell, index)
             }
         })
