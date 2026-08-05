@@ -37,7 +37,8 @@ let step = 'mode';
 let xMove = [];
 let oMove = [];
 let aiLevel = '';
-
+let select = -1;
+let phase = 'place';
 
 // sound function
 function sound(s) {
@@ -76,6 +77,12 @@ function reset() {
     msg.textContent = "Game reset !";
     oMove = [];
     xMove = [];
+    select = -1;
+    phase = 'place';
+
+    cells.forEach(cell => {
+        cell.classList.remove('select');
+    });
 
     if (player === 'X') {
         if (gameMode === 'normal' && how === '1-player') {
@@ -87,6 +94,14 @@ function reset() {
             }
             else if (aiLevel === 'hard') {
                 hardNor()
+            }
+        }
+        else if (gameMode === 'limited' && how === '1-player') {
+            if (aiLevel === 'easy') {
+                easylim()
+            }
+            else if (aiLevel === 'medium') {
+                medLim()
             }
         }
     }
@@ -180,28 +195,7 @@ function n2p(cell, index) {
     }
 }
 
-function l2p(cell, index) {
-    if(cell.textContent === ''){
-        if(player === 'O') {
-            if(oMove.length < 3) {
-                oMove.push(index);
-            } else {
-                oMove.splice(0 ,1);
-                oMove.push(index);
-            }
-        } else {
-            if(xMove.length < 3) {
-                xMove.push(index)
-            } else {
-                xMove.splice(0 ,1);
-                xMove.push(index);
-            }
-        }
-
-        player = player === 'O' ? 'X' : 'O';
-        msg.textContent = `${player}'s turn`;
-    }
-
+function renderBoard() {
     cells.forEach(cell => {
         cell.textContent = '';
     })
@@ -215,8 +209,63 @@ function l2p(cell, index) {
         cells[i].textContent = 'X';
         cells[i].style.color = '#4d79ff';
     }
+}
 
-    checkWin();
+function l2p(cell, index) {
+
+    if (end) return;
+
+    const move = player === 'O' ? oMove : xMove;
+
+    if (phase === 'place') {
+        if (cell.textContent !== '') return;
+
+        move.push(index);
+
+        renderBoard()
+        checkWin()
+
+        if (end) return;
+
+        if (oMove.length === 3 && xMove.length === 3) {
+            phase = 'move';
+        }
+
+        player = player === 'O' ? 'X' : 'O';
+        msg.textContent = `${player}'s turn`;
+
+        return;
+    }
+
+    if (cell.textContent === player) {
+
+        cells.forEach(c => {
+            c.classList.remove('select');
+        });
+
+        select = index;
+        cell.classList.add('select');
+
+        return;
+    }
+
+    if (cell.textContent === "") {
+
+        const place = move.indexOf(select);
+
+        move[place] = index;
+
+        select = -1;
+
+        renderBoard();
+
+        checkWin();
+
+        if (end) return;
+
+        player = player === "O" ? "X" : "O";
+        msg.textContent = `${player}'s turn`;
+    }
 }
 
 function n1p(cell, index) {
@@ -251,6 +300,84 @@ function n1p(cell, index) {
     }
 }
 
+function l1p(cell, index) {
+
+    if (end) return;
+    
+    if (player === 'O') {
+
+        const move = player === 'O' ? oMove : xMove;
+
+        if (phase === 'place') {
+            if (cell.textContent !== '') return;
+
+            move.push(index);
+
+            renderBoard()
+            checkWin()
+
+            if (end) return;
+
+            if (oMove.length === 3 && xMove.length === 3) {
+                phase = 'move';
+            }
+
+            if (end) return;
+
+            player = 'X';
+
+            if (aiLevel === 'easy') {
+                easylim()
+            } 
+            else if (aiLevel === 'medium') {
+                medLim()
+            }
+
+            msg.textContent = `${player}'s turn`;
+
+            return;
+        }
+
+        if (cell.textContent === player) {
+
+            cells.forEach(c => {
+                c.classList.remove('select');
+            });
+
+            select = index;
+            cell.classList.add('select');
+
+            return;
+        }
+
+        if (cell.textContent === "" && select !== -1) {
+
+            const place = move.indexOf(select);
+
+            move[place] = index;
+
+            select = -1;
+
+            renderBoard();
+
+            checkWin();
+
+            player = 'X';
+
+            if (end) return;
+
+            if (aiLevel === 'easy') {
+                easylim()
+            } 
+            else if (aiLevel === 'medium') {
+                medLim()
+            }
+
+            msg.textContent = `${player}'s turn`;
+        }
+    }
+}
+
 // game bot
 function easyNor() {    
     let num;
@@ -268,11 +395,53 @@ function easyNor() {
             draw();
 
             cells[num].style.color = '#4d79ff';
-            player = 'X';
+            player = 'O';
             msg.textContent = `${player}'s turn`;
             sound(clickSound)
         }, 500);
     }
+}
+
+function easylim() {
+
+    if (player !== "X" || end) return;
+
+    const empty = getEmpty(getBoard());
+
+    setTimeout(() => {
+
+        if (end) return;
+
+        const num = empty[Math.floor(Math.random() * empty.length)];
+
+        if (phase === "place") {
+
+            xMove.push(num);
+
+            if (oMove.length === 3 && xMove.length === 3) {
+                phase = "move";
+            }
+
+        } else {
+
+            const piece = Math.floor(Math.random() * xMove.length);
+
+            xMove[piece] = num;
+        }
+
+        renderBoard();
+
+        checkWin();
+        draw();
+
+        if (end) return;
+
+        player = "O";
+        msg.textContent = `${player}'s turn`;
+
+        sound(clickSound);
+
+    }, 500);
 }
 
 function getBoard() {
@@ -385,6 +554,48 @@ function bestMoveMed() {
     return bestPlace;
 }
 
+function bestMoveMedLim() {
+
+    const board = getBoard();
+    const empty = getEmpty(board);
+
+    let bestScore = -Infinity;
+    let bestMove = null;
+
+    for (let i = 0; i < xMove.length; i++) {
+
+        const from = xMove[i];
+
+        for (let to of empty) {
+
+            board[from] = "";
+            board[to] = "X";
+
+            const score = checkBoard(board);
+
+            board[to] = "";
+            board[from] = "X";
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = {
+                    piece: i,
+                    to: to
+                };
+            }
+        }
+    }
+
+    if (!bestMove && empty.length > 0) {
+        bestMove = {
+            piece: Math.floor(Math.random() * xMove.length),
+            to: empty[Math.floor(Math.random() * empty.length)]
+        };
+    }
+
+    return bestMove;
+}
+
 function bestMoveHard() {
     const board = getBoard();
     const empty = getEmpty(board);
@@ -434,6 +645,55 @@ function medNor() {
     }, 500);
 }
 
+function medLim() {
+    if (player !== "X" || end) return;
+
+    setTimeout(() => {
+
+        if (end) return;
+
+        if (phase === "place") {
+
+            const move = bestMoveMed();
+
+            if (move === -1) return;
+
+            xMove.push(move);
+
+            renderBoard();
+
+            checkWin();
+            draw();
+
+            if (end) return;
+
+            if (oMove.length === 3 && xMove.length === 3) {
+                phase = "move";
+            }
+
+            player = "O";
+            msg.textContent = `${player}'s turn`;
+        }else {
+
+            const move = bestMoveMedLim();
+
+            if (!move) return;
+
+            xMove[move.piece] = move.to;
+
+            renderBoard();
+
+            checkWin();
+            draw();
+
+            if (end) return;
+
+            player = "O";
+            msg.textContent = `${player}'s turn`;
+        }
+    }, 500);
+}
+
 function hardNor() {
 
     if (end) return;
@@ -474,6 +734,9 @@ function start() {
             }
             else if(gameMode === 'limited' && how === '2-player') {
                 l2p(cell, index)
+            }
+            else if(gameMode === 'limited' && how === '1-player') {
+                l1p(cell, index)
             }
         })
     })

@@ -121,6 +121,11 @@ body{
     user-select: none;
 }
 
+.select{
+    outline: 3px solid yellow;
+    scale: 1.05;
+}
+
 .container .reset{
     padding: 10px 20px;
     border: none;
