@@ -230,10 +230,11 @@ function n1p(cell, index) {
             
             checkWin();
             draw();
+            player = player === 'O' ? 'X' : 'O';
+
 
             if (end) return;
 
-            player = player === 'O' ? 'X' : 'O';
             msg.textContent = `${player}'s turn`;
             if ([...cells].some(cell => cell.textContent === '')) {
                 if (aiLevel === 'easy') {
@@ -427,12 +428,8 @@ function medNor() {
         checkWin();
         draw();
 
-        if (end) return;
-
-        if (!end) {
-            player = "O";
-            msg.textContent = `${player}'s turn`;
-        }
+        player = "O";
+        msg.textContent = `${player}'s turn`;
 
     }, 500);
 }
@@ -454,12 +451,8 @@ function hardNor() {
         checkWin();
         draw();
 
-        if (end) return;
-
-        if (!end) {
-            player = "O";
-            msg.textContent = `${player}'s turn`;
-        }
+        player = "O";
+        msg.textContent = `${player}'s turn`;
 
     }, 500);
 }
