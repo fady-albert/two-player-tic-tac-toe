@@ -269,12 +269,13 @@ body{
     justify-content: space-evenly;
     flex-direction: column;
     transition: all 1s ease;
-}
-
-.aiLevel.hide{
     opacity: 0;
     pointer-events: none;
-    z-index: 0;
+}
+
+.aiLevel.show{
+    opacity: 1;
+    pointer-events: all;
 }
 
 .aiLevel h1{
@@ -359,7 +360,7 @@ body.dark .display, body.dark .aiLevel{
     background: var(--black);
 }
 
-body.dark .display .content h1, body.dark .aiLevel h1{
+body.dark .display .content h1, body.dark .display .content p, body.dark .aiLevel h1{
     color: var(--white)
 }
 

@@ -14,6 +14,11 @@ const headMsg = document.getElementById('hMsg');
 const btn1 = document.getElementById('btn1');
 const btn2 = document.getElementById('btn2');
 const showDisplay = document.getElementById('showDisplay');
+const chooseAIPage = document.getElementById('aiDisplay');
+const back = document.getElementById('back');
+const easy = document.getElementById('easy');
+const medium = document.getElementById('medium');
+const hard = document.getElementById('hard');
 
 // import sounds
 const clickSound = new Audio('./sounds/click.mp3');
@@ -73,7 +78,17 @@ function reset() {
     xMove = [];
 
     if (player === 'X') {
-        easyNor()
+        if (gameMode === 'normal' && how === '1-player') {
+            if (aiLevel === 'easy') {
+                easyNor()
+            }
+            else if (aiLevel === 'medium') {
+                medNor()
+            }
+            else if (aiLevel === 'hard') {
+                hardNor()
+            }
+        }
     }
 
 }
@@ -211,15 +226,25 @@ function n1p(cell, index) {
     if (cell.textContent === '') {
         if (player === 'O') {
             cell.textContent = player;
+            cell.style.color = '#ff4d6d';
             
             checkWin();
             draw();
 
-            cell.style.color = '#ff4d6d';
+            if (end) return;
+
             player = player === 'O' ? 'X' : 'O';
             msg.textContent = `${player}'s turn`;
             if ([...cells].some(cell => cell.textContent === '')) {
-                easyNor()
+                if (aiLevel === 'easy') {
+                    easyNor()
+                }
+                else if (aiLevel === 'medium') {
+                    medNor()
+                }
+                else if (aiLevel === 'hard') {
+                    hardNor()
+                }
             }
         }
     }
@@ -242,11 +267,201 @@ function easyNor() {
             draw();
 
             cells[num].style.color = '#4d79ff';
-            player = player === 'O' ? 'X' : 'O';
+            player = 'X';
             msg.textContent = `${player}'s turn`;
             sound(clickSound)
         }, 500);
     }
+}
+
+function getBoard() {
+    return [...cells].map(cell => cell.textContent);
+}
+
+function getEmpty(board) {
+    const empty = []
+
+    for(let i = 0; i < board.length; i++) {
+        if (board[i] === '') {
+            empty.push(i);
+        }
+    }
+
+    return empty;
+}
+
+function checkBoard(board) {
+    const winCond = [
+        // row
+        [0, 1, 2],
+        [3, 4, 5],
+        [6 ,7, 8],
+
+        // column
+        [0, 3, 6],
+        [1 ,4 ,7],
+        [2 ,5, 8],
+
+        // diagonal
+        [0 ,4, 8],
+        [2, 4, 6]
+    ]
+
+    for(let win of winCond) {
+        const [a, b, c] = win;
+
+        if(board[a] === board[b] && board[b] === board[c] && board[a] !== '') {
+            
+            if (board[a] === 'O') return -10;
+            if (board[a] === 'X') return 10;
+
+        }
+    }
+
+    return 0;
+}
+
+function minMax(board, max, depth) {
+    const score = checkBoard(board);
+
+    if (score === -10) return depth -10;
+    if (score === 10) return 10 - depth;
+
+    const empty = getEmpty(board);
+
+    if (empty.length === 0) return 0;
+
+    if (max) {
+        let best = -Infinity;
+
+        for (let place of empty) {
+            board[place] = 'X';
+            const score = minMax(board, false, depth + 1);
+            board[place] = '';
+            best = Math.max(best, score);
+        }
+
+        return best;
+    } else {
+        let best = Infinity;
+
+        for (let place of empty) {
+            board[place] = 'O';
+            const score = minMax(board, true, depth + 1);
+            board[place] = '';
+            best = Math.min(best, score);
+        }
+
+        return best;
+    }
+}
+
+function bestMoveMed() {
+    const board = getBoard();
+    const empty = getEmpty(board);
+
+    if (Math.random() < 0.5) {
+        return empty[Math.floor(Math.random() * empty.length)];
+    }
+
+    let bestScore = -Infinity;
+    let bestPlace = -1;
+
+    for (let place of empty) {
+
+        board[place] = "X";
+
+        const score = minMax(board, false, 0);
+
+        board[place] = "";
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestPlace = place;
+        }
+    }
+
+    return bestPlace;
+}
+
+function bestMoveHard() {
+    const board = getBoard();
+    const empty = getEmpty(board);
+
+    let bestScore = -Infinity;
+    let bestPlace = -1;    
+
+    for (let place of empty) {
+
+        board[place] = "X";
+
+        const score = minMax(board, false, 0);
+        console.log(board);
+        
+
+        board[place] = "";
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestPlace = place;
+        }
+    }
+
+    return bestPlace;
+}
+
+function medNor() {
+
+    if (end) return;
+    
+    const move = bestMoveMed();
+
+    if (move === -1) return;
+
+    setTimeout(() => {
+        if (end) return;
+
+        cells[move].textContent = "X";
+        cells[move].style.color = "#00b4d8";
+
+        checkWin();
+        draw();
+
+        if (end) return;
+
+        if (!end) {
+            player = "O";
+            msg.textContent = `${player}'s turn`;
+        }
+
+    }, 500);
+}
+
+function hardNor() {
+
+    if (end) return;
+
+    const move = bestMoveHard();
+
+    if (move === -1) return;
+
+    setTimeout(() => {
+        if (end) return;
+
+        cells[move].textContent = "X";
+        cells[move].style.color = "#00b4d8";
+
+        checkWin();
+        draw();
+
+        if (end) return;
+
+        if (!end) {
+            player = "O";
+            msg.textContent = `${player}'s turn`;
+        }
+
+    }, 500);
 }
 
 // start the game as thse user want to play
@@ -303,12 +518,13 @@ btn2.addEventListener('click', () => {
         gameMode = 'limited';
     } else {
         display.classList.add('hide');
+        chooseAIPage.classList.add('show');
         how = '1-player';
         start()
     }
 })
 
-showDisplay.addEventListener('click', () => {
+function showData() {
     step = 'mode';
     gameMode = '';
     how = '';
@@ -316,4 +532,34 @@ showDisplay.addEventListener('click', () => {
     btn2.textContent = 'limited';
     headMsg.textContent = 'choose the game mode';
     display.classList.remove('hide');
+}
+
+showDisplay.addEventListener('click', () => {
+    showData()
+    reset()
+    scoreX = 0;
+    scoreO = 0;
+    winX.textContent = scoreX;
+    winO.textContent = scoreO;
+    player = 'O';
+})
+
+back.addEventListener('click', () => {
+    showData()
+    chooseAIPage.classList.remove('show');
+})
+
+easy.addEventListener('click', () => {
+    aiLevel = 'easy';
+    chooseAIPage.classList.remove('show');
+})
+
+medium.addEventListener('click', () => {
+    aiLevel = 'medium';
+    chooseAIPage.classList.remove('show');
+})
+
+hard.addEventListener('click', () => {
+    aiLevel = 'hard';
+    chooseAIPage.classList.remove('show');
 })
