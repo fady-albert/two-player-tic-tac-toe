@@ -457,7 +457,7 @@ function hardNor() {
     }, 500);
 }
 
-// start the game as thse user want to play
+// start the game as the user want to play
 function start() {
     cells.forEach((cell, index) => {
         cell.addEventListener('click', () => {
