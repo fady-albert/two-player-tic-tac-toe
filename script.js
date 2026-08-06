@@ -99,9 +99,12 @@ function reset() {
         else if (gameMode === 'limited' && how === '1-player') {
             if (aiLevel === 'easy') {
                 easylim()
-            }
+            } 
             else if (aiLevel === 'medium') {
                 medLim()
+            }
+            else if (aiLevel === 'hard') {
+                hardLim()
             }
         }
     }
@@ -332,6 +335,9 @@ function l1p(cell, index) {
             else if (aiLevel === 'medium') {
                 medLim()
             }
+            else if (aiLevel === 'hard') {
+                hardLim()
+            }
 
             msg.textContent = `${player}'s turn`;
 
@@ -371,6 +377,9 @@ function l1p(cell, index) {
             } 
             else if (aiLevel === 'medium') {
                 medLim()
+            }
+            else if (aiLevel === 'hard') {
+                hardLim()
             }
 
             msg.textContent = `${player}'s turn`;
@@ -433,10 +442,10 @@ function easylim() {
 
         checkWin();
         draw();
+        player = "O";
 
         if (end) return;
 
-        player = "O";
         msg.textContent = `${player}'s turn`;
 
         sound(clickSound);
@@ -526,6 +535,69 @@ function minMax(board, max, depth) {
     }
 }
 
+function minMaxLim(board, max, oMove, xMove, depth) {
+    const score = checkBoard(board);
+
+    if (score === -10) return depth -10;
+    if (score === 10) return 10 - depth;
+
+    const empty = getEmpty(board);
+
+    if (depth >= 3) return checkBoard(board);
+
+    if (max) {
+        let best = -Infinity;
+
+        for (let i = 0; i< xMove.length; i++) {
+            const from = xMove[i];
+
+            for (let to of empty) {
+                board[from] = '';
+                board[to] = 'X';
+
+                xMove[i] = to;
+
+                best = Math.max(
+                    best, 
+                    minMaxLim(board, false, oMove, xMove, depth + 1)
+                );
+
+                xMove[i] = from;
+
+                board[to] = '';
+                board[from] = 'X';
+            }
+        }
+
+        return best;
+    } else {
+        let best = Infinity;
+
+        for (let i = 0; i< oMove.length; i++) {
+            const from = oMove[i];
+
+            for (let to of empty) {
+                board[from] = '';
+                board[to] = 'O';
+
+                oMove[i] = to;
+
+                best = Math.min(
+                    best, 
+                    minMaxLim(board, true, oMove, xMove, depth + 1)
+                );
+
+                oMove[i] = from;
+
+                board[to] = '';
+                board[from] = 'O';
+            }
+        }
+
+        return best;
+    }
+}
+
 function bestMoveMed() {
     const board = getBoard();
     const empty = getEmpty(board);
@@ -607,9 +679,7 @@ function bestMoveHard() {
 
         board[place] = "X";
 
-        const score = minMax(board, false, 0);
-        console.log(board);
-        
+        const score = minMax(board, false, 0);        
 
         board[place] = "";
 
@@ -620,6 +690,44 @@ function bestMoveHard() {
     }
 
     return bestPlace;
+}
+
+function bestMoveHardLim() {
+    const board = getBoard();
+    const empty = getEmpty(board);
+
+    let bestScore = -Infinity;
+    let bestMove = null;
+
+    for (let i = 0; i < xMove.length; i++) {
+
+        const from = xMove[i];
+
+        for (let to of empty) {
+
+            board[from] = "";
+            board[to] = "X";
+
+            xMove[i] = to;
+
+            const score = minMaxLim(board, false, oMove, xMove, 0);
+
+            xMove[i] = from;
+
+            board[to] = "";
+            board[from] = "X";
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = {
+                    piece: i,
+                    to: to
+                };
+            }
+        }
+    }
+
+    return bestMove;
 }
 
 function medNor() {
@@ -714,6 +822,58 @@ function hardNor() {
         player = "O";
         msg.textContent = `${player}'s turn`;
 
+    }, 500);
+}
+
+function hardLim() {
+    if (player !== "X" || end) return;
+
+    setTimeout(() => {
+
+        if (end) return;
+
+        if (phase === "place") {
+
+            const move = bestMoveHard();
+
+            if (move === -1) return;
+
+            xMove.push(move);
+
+            if (oMove.length === 3 && xMove.length === 3) {
+                phase = "move";
+            }
+
+            renderBoard();
+
+            checkWin();
+            draw();
+
+            player = "O";
+
+            if (end) return;
+
+            msg.textContent = `${player}'s turn`;
+        }else {
+
+            const move = bestMoveHardLim();
+            console.log(move);
+
+            if (!move) return;
+
+            xMove[move.piece] = move.to;
+
+            renderBoard();
+
+            checkWin();
+            draw();
+
+            player = "O";
+
+            if (end) return;
+
+            msg.textContent = `${player}'s turn`;
+        }
     }, 500);
 }
 
