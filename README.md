@@ -1,14 +1,14 @@
-#  Tic-Tac-Toe
+# Tic-Tac-Toe
 
 A modern Tic-Tac-Toe game built with **HTML**, **CSS**, and **JavaScript**. It features multiple game modes, AI opponents with different difficulty levels, score tracking, sound effects, dark mode, and a clean responsive interface.
 
-##  Live Demo
+## Live Demo
 
 **Play Now:** https://fady-albert.github.io/TIC-TAC-TOE/
 
 ---
 
-##  Features
+## Features
 
 - Two game modes
   - Normal Mode
@@ -39,7 +39,7 @@ A modern Tic-Tac-Toe game built with **HTML**, **CSS**, and **JavaScript**. It f
 
 ---
 
-##  Built With
+## Built With
 
 - HTML5
 - CSS3
@@ -47,7 +47,7 @@ A modern Tic-Tac-Toe game built with **HTML**, **CSS**, and **JavaScript**. It f
 
 ---
 
-##  Game Modes
+## Game Modes
 
 ### Normal Mode
 
@@ -63,7 +63,7 @@ This creates a more strategic version of the classic Tic-Tac-Toe.
 
 ---
 
-##  AI Difficulty
+## AI Difficulty
 
 ### Easy
 
@@ -76,12 +76,12 @@ This creates a more strategic version of the classic Tic-Tac-Toe.
 
 ### Hard
 
-- Uses the **Minimax Algorithm** to choose the optimal move in Normal Mode.
-- Designed to provide a challenging opponent.
+- Uses the **Minimax Algorithm** to choose the optimal move.
+- Provides the most challenging AI opponent.
 
 ---
 
-##  How to Play
+## How to Play
 
 1. Choose a game mode.
 2. Choose your opponent.
@@ -93,7 +93,7 @@ This creates a more strategic version of the classic Tic-Tac-Toe.
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```text
 TIC-TAC-TOE/
@@ -106,10 +106,11 @@ TIC-TAC-TOE/
 │   ├── win.mp3
 │   └── remove.mp3
 └── README.md
+```
 
 ---
 
-## 🚀 Installation
+## Installation
 
 Clone the repository:
 
@@ -127,7 +128,7 @@ No installation or dependencies are required.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Fady Albert**
 
@@ -135,12 +136,12 @@ GitHub: https://github.com/fady-albert
 
 ---
 
-## ⭐ Support
+## Support
 
-If you enjoyed this project, consider giving it a **⭐ Star** on GitHub. It helps support future development and motivates me to build more open-source projects.
+If you enjoyed this project, consider giving it a **Star** on GitHub. It helps support future development and motivates me to build more open-source projects.
 
 ---
 
-## 📄 License
+## License
 
 This project is open source and available under the **MIT License**.
