@@ -84,6 +84,7 @@ function reset() {
         cell.classList.remove('select');
     });
 
+    // to start the game with AI to play X
     if (player === 'X') {
         if (gameMode === 'normal' && how === '1-player') {
             if (aiLevel === 'easy') {
@@ -111,6 +112,7 @@ function reset() {
 
 }
 
+// reset data
 resetBtn.addEventListener('click', () => {
     if ([...cells].every(cell => cell.textContent === '')) return;
 
@@ -118,6 +120,7 @@ resetBtn.addEventListener('click', () => {
     reset();
 });
 
+// reset data and score
 resetScoreBtn.addEventListener('click', () => {
     if (scoreX === 0 && scoreO === 0) return;
 
@@ -187,6 +190,7 @@ function checkWin() {
 }
 
 // main
+// normal two player
 function n2p(cell, index) {
     if(cell.textContent === '') {
         cell.textContent = player;
@@ -198,6 +202,7 @@ function n2p(cell, index) {
     }
 }
 
+// add data to html
 function renderBoard() {
     cells.forEach(cell => {
         cell.textContent = '';
@@ -214,6 +219,7 @@ function renderBoard() {
     }
 }
 
+// limited two player
 function l2p(cell, index) {
 
     if (end) return;
@@ -271,6 +277,7 @@ function l2p(cell, index) {
     }
 }
 
+// normal single game
 function n1p(cell, index) {
 
     if (end) return;
@@ -303,6 +310,7 @@ function n1p(cell, index) {
     }
 }
 
+// limited single game
 function l1p(cell, index) {
 
     if (end) return;
@@ -388,6 +396,7 @@ function l1p(cell, index) {
 }
 
 // game bot
+// normal easy ai that play in randome place
 function easyNor() {    
     let num;
     if (player === 'X') {
@@ -411,6 +420,7 @@ function easyNor() {
     }
 }
 
+// limited east ai that choose randome data and change its place
 function easylim() {
 
     if (player !== "X" || end) return;
@@ -453,10 +463,12 @@ function easylim() {
     }, 500);
 }
 
+// to make a virtual board
 function getBoard() {
     return [...cells].map(cell => cell.textContent);
 }
 
+// to get empty places
 function getEmpty(board) {
     const empty = []
 
@@ -469,6 +481,7 @@ function getEmpty(board) {
     return empty;
 }
 
+// chaeck win in virtual board
 function checkBoard(board) {
     const winCond = [
         // row
@@ -500,6 +513,7 @@ function checkBoard(board) {
     return 0;
 }
 
+// normal game algorithm
 function minMax(board, max, depth) {
     const score = checkBoard(board);
 
@@ -535,6 +549,7 @@ function minMax(board, max, depth) {
     }
 }
 
+// limited game algorithm
 function minMaxLim(board, max, oMove, xMove, depth) {
     const score = checkBoard(board);
 
