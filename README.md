@@ -4,7 +4,7 @@ A modern Tic-Tac-Toe game built with **HTML**, **CSS**, and **JavaScript**. It f
 
 ## Live Demo
 
-**Play Now:** https://fady-albert.github.io/TIC-TAC-TOE/
+**Play Now:** https://fady-albert.github.io/two-player-tic-tac-toe/
 
 ---
 
