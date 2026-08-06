@@ -764,6 +764,7 @@ function medNor() {
 
         player = "O";
         msg.textContent = `${player}'s turn`;
+        sound(clickSound)
 
     }, 500);
 }
@@ -796,6 +797,7 @@ function medLim() {
 
             player = "O";
             msg.textContent = `${player}'s turn`;
+            sound(clickSound)
         }else {
 
             const move = bestMoveMedLim();
@@ -813,6 +815,7 @@ function medLim() {
 
             player = "O";
             msg.textContent = `${player}'s turn`;
+            sound(clickSound)
         }
     }, 500);
 }
@@ -836,7 +839,7 @@ function hardNor() {
 
         player = "O";
         msg.textContent = `${player}'s turn`;
-
+        sound(clickSound)
     }, 500);
 }
 
@@ -865,6 +868,7 @@ function hardLim() {
             draw();
 
             player = "O";
+            sound(clickSound)
 
             if (end) return;
 
@@ -884,6 +888,7 @@ function hardLim() {
             draw();
 
             player = "O";
+            sound(clickSound)
 
             if (end) return;
 
