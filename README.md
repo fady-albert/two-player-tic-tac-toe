@@ -115,7 +115,7 @@ TIC-TAC-TOE/
 Clone the repository:
 
 ```bash
-git clone https://github.com/fady-albert/TIC-TAC-TOE.git
+git clone https://github.com/fady-albert/two-player-tic-tac-toe.git
 ```
 
 Open the project folder and run:
