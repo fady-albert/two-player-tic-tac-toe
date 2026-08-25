@@ -121,6 +121,14 @@ body{
     user-select: none;
 }
 
+.board .cell:hover{
+    background: var(--gray);
+}
+
+body.dark .board .cell:hover{
+    background: var(--cyan);
+}
+
 .select{
     outline: 3px solid yellow;
     scale: 1.05;
