@@ -121,6 +121,13 @@ body{
     user-select: none;
 }
 
+@media (max-width: 800px) {
+    .board .cell{
+        width: 100px;
+        height: 100px;
+    }
+}
+
 .board .cell:hover{
     background: var(--gray);
 }
