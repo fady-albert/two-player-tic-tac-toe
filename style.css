@@ -121,14 +121,6 @@ body{
     user-select: none;
 }
 
-@media (max-width: 500px) {
-    .board .cell{
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
-    }
-}
-
 .board .cell:hover{
     background: var(--gray);
 }
@@ -388,4 +380,16 @@ body.dark .display .content h1, body.dark .display .content p, body.dark .aiLeve
 body.dark .display .content .btns button, body.dark .aiLevel button{
     background: var(--white);
     color: var(--black);
+}
+
+@media (max-width: 600px) {
+    .board .cell{
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        font-size: 40px;
+    }
+    .display .content .btns{
+        flex-direction: column;
+    }
 }
