@@ -26,7 +26,7 @@ const winSound = new Audio('./sounds/win.mp3');
 const removeSound = new Audio('./sounds/remove.mp3');
 
 // add JS data
-const savedMode = localStorage.getItem('mode') || '';
+const savedMode = localStorage.getItem('mode');
 let player = 'O';
 let end = false;
 let scoreX = 0;
@@ -60,7 +60,7 @@ modeBtn.addEventListener('click', () => {
 });
 
 // check the mode from local storage
-if(savedMode === 'dark') {
+if(savedMode === null || savedMode === 'dark') {
     main.classList.add('dark');
     modeBtnIcon.textContent = main.classList.contains('dark') ? 'dark_mode' : 'light_mode';
 }
