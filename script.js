@@ -202,7 +202,7 @@ function checkWin() {
 function n2p(cell, index) { 
     if(cell.textContent === '') { 
         cell.textContent = player; 
-        cell.style.color = player === 'O' ? '#ff4d6d' : '#4d79ff'; 
+        cell.style.color = player === 'O' ? '#FF1A1A' : '#8B0000'; 
         player = player === 'O' ? 'X' : 'O'; 
         msg.textContent = `${player}'s turn`; 
         checkWin(); 
@@ -218,12 +218,12 @@ function renderBoard() {
  
     for (let i of oMove) { 
         cells[i].textContent = 'O'; 
-        cells[i].style.color = '#ff4d6d'; 
+        cells[i].style.color = '#FF1A1A'; 
     } 
  
     for (let i of xMove) { 
         cells[i].textContent = 'X'; 
-        cells[i].style.color = '#4d79ff'; 
+        cells[i].style.color = '#8B0000'; 
     } 
 } 
  
@@ -293,7 +293,7 @@ function n1p(cell, index) {
     if (cell.textContent === '') { 
         if (player === 'O') { 
             cell.textContent = player; 
-            cell.style.color = '#ff4d6d'; 
+            cell.style.color = '#FF1A1A'; 
              
             checkWin(); 
             draw(); 
@@ -420,7 +420,7 @@ function easyNor() {
             checkWin(); 
             draw(); 
  
-            cells[num].style.color = '#4d79ff'; 
+            cells[num].style.color = '#8B0000'; 
             player = 'O'; 
             msg.textContent = `${player}'s turn`; 
             sound(clickSound) 

@@ -1,10 +1,10 @@
 /* define colors */
-:root{
-    --black: #0D1B2A;
-    --gray: #1B263B;
-    --blue: #415A77;
-    --cyan: #778DA9;
-    --white: #E0E1DD;
+:root {
+    --black: #0D0000;
+    --gray: #1B0505;
+    --blue: #410D0D;
+    --cyan: #771515;
+    --white: #E0D5D5;
 }
 
 /* main */
@@ -176,12 +176,14 @@ body.dark .board .cell:hover{
 
 .points#winX{
     left: 10px;
-    color: #4d79ff;
+    color: #8B0000;
+    text-shadow: 0 0 10px #8B0000;
 }
 
 .points#winO{
     right: 10px;
-    color: #ff4d6d;
+    color: #FF1A1A;
+    text-shadow: 0 0 10px #FF1A1A;
 }
 
 /* display */
