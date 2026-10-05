@@ -24,6 +24,14 @@ const hard = document.getElementById('hard');
 const clickSound = new Audio('./sounds/click.mp3'); 
 const winSound = new Audio('./sounds/win.mp3'); 
 const removeSound = new Audio('./sounds/remove.mp3'); 
+const horror = new Audio('./sounds/horror.mp3');
+
+horror.loop = true;
+horror.volume = 0.5;
+
+document.addEventListener("click", () => {
+    horror.play();
+}, { once: true });
  
 // add JS data 
 const savedMode = localStorage.getItem('mode') || ''; 
